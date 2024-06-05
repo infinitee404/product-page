@@ -1,5 +1,16 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Modal from 'react-modal'
+import { zoomContext } from '../App'
+
+import image1 from '../assets/image-product-1.jpg'
+import image2 from '../assets/image-product-2.jpg'
+import image3 from '../assets/image-product-3.jpg'
+import image4 from '../assets/image-product-4.jpg'
+
+import thumbnail1 from '../assets/image-product-1-thumbnail.jpg'
+import thumbnail2 from '../assets/image-product-2-thumbnail.jpg'
+import thumbnail3 from '../assets/image-product-3-thumbnail.jpg'
+import thumbnail4 from '../assets/image-product-4-thumbnail.jpg'
 
 const modalStyles = {
 	overlay: {
@@ -17,16 +28,6 @@ const modalStyles = {
 	},
 }
 
-import image1 from '../assets/image-product-1.jpg'
-import image2 from '../assets/image-product-2.jpg'
-import image3 from '../assets/image-product-3.jpg'
-import image4 from '../assets/image-product-4.jpg'
-
-import thumbnail1 from '../assets/image-product-1-thumbnail.jpg'
-import thumbnail2 from '../assets/image-product-2-thumbnail.jpg'
-import thumbnail3 from '../assets/image-product-3-thumbnail.jpg'
-import thumbnail4 from '../assets/image-product-4-thumbnail.jpg'
-
 const images = [
 	{ main: image1, thumbnail: thumbnail1 },
 	{ main: image2, thumbnail: thumbnail2 },
@@ -35,9 +36,11 @@ const images = [
 ]
 
 const ProductLeft = () => {
+	const { showZoom, setShowZoom } = useContext(zoomContext)
 	const [productImage, setProductImage] = useState(image1)
 	const [productModal, setProductModal] = useState(false)
 	const [modalImage, setModalImage] = useState()
+	const [coords, setCoords] = useState({ x: 0, y: 0 })
 
 	const handleImageChange = (value) => {
 		const currentIndex = images.findIndex((image) => image.main === productImage)
@@ -73,11 +76,22 @@ const ProductLeft = () => {
 		setModalImage(productImage)
 		setProductModal(true)
 	}
+
 	const closeModal = () => {
 		setProductModal(false)
 	}
+
+	const handleMouseMove = (event) => {
+		const rect = event.currentTarget.getBoundingClientRect()
+		const centerX = rect.width / 2
+		const centerY = rect.height / 2
+		const x = event.clientX - rect.left - centerX
+		const y = event.clientY - rect.top - centerY
+		console.log(`X: ${x}, Y: ${y}`)
+	}
+
 	return (
-		<div className='w-[25rem] select-none flex flex-col'>
+		<div className='relative w-[25rem] select-none flex flex-col'>
 			<div className='relative flex items-center justify-center mb-8 md:mb-0'>
 				<div
 					onClick={() => handleImageChange(-1)}
@@ -97,12 +111,32 @@ const ProductLeft = () => {
 						/>
 					</svg>
 				</div>
-				<img
-					onClick={openModal}
-					className='md:rounded-[1rem] max-md:h-[20rem] cursor-pointer'
-					src={productImage}
-					alt='Selected product'
-				/>
+				<div className='relative'>
+					<img
+						onClick={openModal}
+						onMouseEnter={() => setShowZoom(true)}
+						onMouseLeave={() => setShowZoom(false)}
+						onMouseMove={handleMouseMove}
+						className='md:rounded-[1rem] max-md:h-[20rem] cursor-zoom-in'
+						src={productImage}
+						alt='Selected product'
+					/>
+					{showZoom && (
+						<div className='absolute overflow-hidden translate-x-[125%] top-0 right-0 h-[33rem] w-[33rem] bg-green-500 z-10'>
+							<img
+                            style={{
+                                height: '33rem',
+                                width: '33rem',
+                                top: '',
+                                left: ''
+                            }}
+								className='scale-[3]'
+								src={productImage}
+								alt='zoomed image'
+							/>
+						</div>
+					)}
+				</div>
 				<div
 					onClick={() => handleImageChange(1)}
 					className='md:hidden absolute cursor-pointer top-1/2 z-1 right-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2'
@@ -145,6 +179,7 @@ const ProductLeft = () => {
 					</div>
 				))}
 			</div>
+
 			<div>
 				<Modal
 					isOpen={productModal}

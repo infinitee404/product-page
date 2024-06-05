@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import ProductPage from './components/ProductPage'
 
 export const cartItemContext = createContext()
+export const zoomContext = createContext()
 
 const App = () => {
 	const [cartItem, setCartItem] = useState({
@@ -11,6 +12,8 @@ const App = () => {
 		rate: '',
 	})
 
+	const [showZoom, setShowZoom] = useState(false)
+
 	const handleCartChange = (count, name, rate) => {
 		setCartItem({ count, name, rate })
 	}
@@ -18,8 +21,10 @@ const App = () => {
 	return (
 		<>
 			<cartItemContext.Provider value={{ cartItem, handleCartChange }}>
-				<Navbar />
-				<ProductPage />
+				<zoomContext.Provider value={{ showZoom, setShowZoom }}>
+					<Navbar />
+					<ProductPage />
+				</zoomContext.Provider>
 			</cartItemContext.Provider>
 		</>
 	)

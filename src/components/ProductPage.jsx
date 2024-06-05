@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import ProductLeft from './ProductLeft'
 import { cartItemContext } from '../App'
+import { zoomContext } from '../App'
 
 const products = {
 	shoes: {
@@ -21,6 +22,7 @@ const products = {
 
 const ProductPage = () => {
 	const { handleCartChange } = useContext(cartItemContext)
+	const { showZoom, setShowZoom } = useContext(zoomContext)
 
 	const [productCount, setProductCount] = useState(0)
 
@@ -45,7 +47,7 @@ const ProductPage = () => {
 			className='w-full flex max-md:flex-col max-w-[1000px] md:justify-between mx-auto items-center'
 		>
 			<ProductLeft />
-			<div className='max-w-[22rem]'>
+			{!showZoom && <div className='max-w-[22rem]'>
 				<div className='text-gray-600 font-semibold uppercase mb-2 md:mb-4'>{products.shoes.brand}</div>
 				<h1 className='text-gray-800 text-4xl font-extrabold mb-4 md:mb-8'>{products.shoes.name}</h1>
 				<p className='text-gray-400 mb-4'>{products.shoes.description}</p>
@@ -124,7 +126,7 @@ const ProductPage = () => {
 						<span className='text-gray-800 font-bold'>Add to Cart</span>
 					</button>
 				</div>
-			</div>
+			</div>}
 		</main>
 	)
 }
