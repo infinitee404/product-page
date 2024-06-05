@@ -74,7 +74,7 @@ const ProductLeft = () => {
 				className='h-[25rem]'
 			>
 				<img
-					className='md:rounded-[1rem]'
+					className='md:rounded-[1rem] cursor-pointer'
 					src={productImage}
 					alt='Selected product'
 				/>

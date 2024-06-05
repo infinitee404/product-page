@@ -1,8 +1,19 @@
 import React, { useState } from 'react'
 import ProductLeft from './ProductLeft'
 
+const Products = [
+    {
+        price: '250',
+        discountPercent: '50',
+    }
+]
 const ProductPage = () => {
 	const [productCount, setProductCount] = useState(0)
+
+    const sendToCart = () =>{
+        console.log('sending ',productCount, 'to cart')
+        setProductCount(0)
+    }
 
 	return (
 		<main
@@ -71,7 +82,9 @@ const ProductPage = () => {
 						</div>
 					</div>
 
-					<button className='rounded-lg w-full flex items-center justify-center bg-[#FF7E1B] hover:bg-[#FFAC6C]'>
+					<button 
+                    onClick={()=> sendToCart()}
+                    className='rounded-lg w-full flex items-center justify-center bg-[#FF7E1B] hover:bg-[#FFAC6C]'>
 						<div className='mr-4'>
 							<svg
 								width='22'
