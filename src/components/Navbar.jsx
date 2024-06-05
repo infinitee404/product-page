@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import CartContent from './CartContent'
 
 import Logo from '../assets/logo.svg'
@@ -48,7 +48,7 @@ const Navbar = () => {
 							fillRule='nonzero'
 						/>
 					</svg>
-					{cartVisible && <CartContent items={[]} />}
+					{cartVisible && <CartContent />}
 				</div>
 				<img
 					className='h-12 rounded-full border-[2px] border-transparent hover:border-[#FF7E1B] hover:outline-none cursor-pointer'

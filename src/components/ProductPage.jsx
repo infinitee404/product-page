@@ -1,43 +1,66 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ProductLeft from './ProductLeft'
+import { cartItemContext } from '../App'
 
-const Products = [
-    {
-        price: '250',
-        discountPercent: '50',
-    }
-]
+const products = {
+	shoes: {
+		brand: 'SNEAKER COMPANY',
+		name: 'Fall Limited Edition Sneakers',
+		description: `These low-profile sneakers are your perfect casual wear companion. Featuring a durable rubber outer sole, they'll withstand everything the weather can offer.`,
+		price: 250,
+		discountPercent: 50,
+	},
+	bags: {
+		brand: 'BAG COMPANY',
+		name: 'Spring Exclusive Edition Bags',
+		description: `These low-profile bags are your perfect casual carry companion. Featuring a durable leather outer body, they'll withstand every weight you can offer.`,
+		price: 1500,
+		discountPercent: 25,
+	},
+}
+
 const ProductPage = () => {
-	const [productCount, setProductCount] = useState(0)
+	const { handleCartChange } = useContext(cartItemContext)
 
-    const sendToCart = () =>{
-        console.log('sending ',productCount, 'to cart')
-        setProductCount(0)
-    }
+	const [productCount, setProductCount] = useState(0)
+	const [showError, setShowError] = useState(false)
+
+	const sendToCart = () => {
+		if (productCount === 0) {
+			setShowError(true)
+			return
+		}
+		handleCartChange(productCount, products.shoes.name, products.shoes.price)
+		setProductCount(0)
+	}
+
+	const handleCountChange = (value) => {
+		if (productCount === 0 && value === -1) return
+		setProductCount((prevCount) => prevCount + value)
+	}
+
+	const discountedPrice = ((products.shoes.price * products.shoes.discountPercent) / 100).toFixed(2)
 
 	return (
 		<main
-			style={{ height: `calc(100vh - 6rem)` }}
+			style={{ height: 'calc(100vh - 6rem)' }}
 			className='w-full flex max-md:flex-col max-w-[1000px] justify-between mx-auto items-center'
 		>
 			<ProductLeft />
 			<div className='max-w-[22rem]'>
 				<div className='text-gray-600 font-semibold uppercase mb-4'>Sneaker Company</div>
-				<h1 className='text-gray-800 text-4xl font-extrabold mb-8'>Fall Limited Edition Sneakers</h1>
-				<p className='text-gray-400 mb-4'>
-					These low-profile sneakers are your perfect casual wear companion. Featuring a durable rubber outer sole, they'll withstand
-					everything the weather can offer.
-				</p>
+				<h1 className='text-gray-800 text-4xl font-extrabold mb-8'>{products.shoes.name}</h1>
+				<p className='text-gray-400 mb-4'>{products.shoes.description}</p>
 				<div className='flex items-center mb-4'>
-					<span className='font-bold text-3xl'>$125.00</span>
-					<span className='bg-gray-800 rounded text-white font-semibold px-2 ml-4'>50%</span>
+					<span className='font-bold text-3xl'>${discountedPrice}</span>
+					<span className='bg-gray-800 rounded text-white font-semibold px-2 ml-4'>{products.shoes.discountPercent}%</span>
 				</div>
-				<p className='text-gray-600 line-through'>$250.00</p>
-				<div className='flex h-[4rem]'>
+				<p className='text-gray-600 line-through'>${products.shoes.price.toFixed(2)}</p>
+				<div className='relative flex h-[4rem]'>
 					<div className='flex justify-evenly w-[16rem] items-center mr-8 select-none'>
 						<div
 							className='icon-parent flex justify-center items-center h-full w-full cursor-pointer'
-							onClick={() => setProductCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0))}
+							onClick={() => handleCountChange(-1)}
 						>
 							<svg
 								width='12'
@@ -60,7 +83,7 @@ const ProductPage = () => {
 						<span className='w-24 h-full flex items-center justify-center font-bold'>{productCount}</span>
 						<div
 							className='icon-parent flex justify-center items-center h-full w-full cursor-pointer'
-							onClick={() => setProductCount((prevCount) => prevCount + 1)}
+							onClick={() => handleCountChange(1)}
 						>
 							<svg
 								width='12'
@@ -81,10 +104,10 @@ const ProductPage = () => {
 							</svg>
 						</div>
 					</div>
-
-					<button 
-                    onClick={()=> sendToCart()}
-                    className='rounded-lg w-full flex items-center justify-center bg-[#FF7E1B] hover:bg-[#FFAC6C]'>
+					<button
+						onClick={sendToCart}
+						className='rounded-lg w-full flex items-center justify-center bg-[#FF7E1B] hover:bg-[#FFAC6C]'
+					>
 						<div className='mr-4'>
 							<svg
 								width='22'
@@ -100,6 +123,7 @@ const ProductPage = () => {
 						</div>
 						<span className='text-gray-800 font-bold'>Add to Cart</span>
 					</button>
+					{showError && <div className='absolute bottom-0 -m-10 text-red-600 mx-auto'>Please select items to add to cart</div>}
 				</div>
 			</div>
 		</main>
