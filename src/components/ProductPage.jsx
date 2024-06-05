@@ -23,11 +23,9 @@ const ProductPage = () => {
 	const { handleCartChange } = useContext(cartItemContext)
 
 	const [productCount, setProductCount] = useState(0)
-	const [showError, setShowError] = useState(false)
 
 	const sendToCart = () => {
 		if (productCount === 0) {
-			setShowError(true)
 			return
 		}
 		handleCartChange(productCount, products.shoes.name, products.shoes.price)
@@ -44,20 +42,22 @@ const ProductPage = () => {
 	return (
 		<main
 			style={{ height: 'calc(100vh - 6rem)' }}
-			className='w-full flex max-md:flex-col max-w-[1000px] justify-between mx-auto items-center'
+			className='w-full flex max-md:flex-col max-w-[1000px] md:justify-between mx-auto items-center'
 		>
 			<ProductLeft />
 			<div className='max-w-[22rem]'>
-				<div className='text-gray-600 font-semibold uppercase mb-4'>Sneaker Company</div>
-				<h1 className='text-gray-800 text-4xl font-extrabold mb-8'>{products.shoes.name}</h1>
+				<div className='text-gray-600 font-semibold uppercase mb-2 md:mb-4'>{products.shoes.brand}</div>
+				<h1 className='text-gray-800 text-4xl font-extrabold mb-4 md:mb-8'>{products.shoes.name}</h1>
 				<p className='text-gray-400 mb-4'>{products.shoes.description}</p>
-				<div className='flex items-center mb-4'>
-					<span className='font-bold text-3xl'>${discountedPrice}</span>
-					<span className='bg-gray-800 rounded text-white font-semibold px-2 ml-4'>{products.shoes.discountPercent}%</span>
+				<div className='max-md:flex justify-between flex-row'>
+					<div className='flex items-center mb-4'>
+						<span className='font-bold text-3xl'>${discountedPrice}</span>
+						<span className='bg-gray-800 rounded text-white font-semibold px-2 ml-4'>{products.shoes.discountPercent}%</span>
+					</div>
+					<p className='text-gray-600 max-md:font-bold line-through'>${products.shoes.price.toFixed(2)}</p>
 				</div>
-				<p className='text-gray-600 line-through'>${products.shoes.price.toFixed(2)}</p>
-				<div className='relative flex h-[4rem]'>
-					<div className='flex justify-evenly w-[16rem] items-center mr-8 select-none'>
+				<div className='relative max-md:flex-col flex h-[4rem]'>
+					<div className='flex justify-evenly max-md:justify-between max-md:my-4 max-md:w-full w-[16rem] items-center mr-8 select-none'>
 						<div
 							className='icon-parent flex justify-center items-center h-full w-full cursor-pointer'
 							onClick={() => handleCountChange(-1)}
@@ -106,7 +106,7 @@ const ProductPage = () => {
 					</div>
 					<button
 						onClick={sendToCart}
-						className='rounded-lg w-full flex items-center justify-center bg-[#FF7E1B] hover:bg-[#FFAC6C]'
+						className='rounded-lg max-md:py-4 w-full flex items-center justify-center bg-[#FF7E1B] hover:bg-[#FFAC6C]'
 					>
 						<div className='mr-4'>
 							<svg
@@ -123,7 +123,6 @@ const ProductPage = () => {
 						</div>
 						<span className='text-gray-800 font-bold'>Add to Cart</span>
 					</button>
-					{showError && <div className='absolute bottom-0 -m-10 text-red-600 mx-auto'>Please select items to add to cart</div>}
 				</div>
 			</div>
 		</main>

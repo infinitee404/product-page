@@ -39,8 +39,17 @@ const ProductLeft = () => {
 	const [productModal, setProductModal] = useState(false)
 	const [modalImage, setModalImage] = useState()
 
-	const handleImageChange = (imageName) => {
-		setProductImage(imageName)
+	const handleImageChange = (value) => {
+		const currentIndex = images.findIndex((image) => image.main === productImage)
+		let newIndex = currentIndex + value
+
+		if (newIndex < 0) {
+			newIndex = images.length - 1
+		} else if (newIndex >= images.length) {
+			newIndex = 0
+		}
+
+		setProductImage(images[newIndex].main)
 	}
 
 	const handleModalImageChange = (imageName) => {
@@ -68,16 +77,50 @@ const ProductLeft = () => {
 		setProductModal(false)
 	}
 	return (
-		<div className='w-[25rem] flex flex-col'>
-			<div
-				onClick={openModal}
-				className='h-[25rem]'
-			>
+		<div className='w-[25rem] select-none flex flex-col'>
+			<div className='relative flex items-center justify-center mb-8 md:mb-0'>
+				<div
+					onClick={() => handleImageChange(-1)}
+					className='md:hidden absolute cursor-pointer top-1/2 z-1 left-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2 '
+				>
+					<svg
+						width='12'
+						height='18'
+						xmlns='http://www.w3.org/2000/svg'
+					>
+						<path
+							d='M11 1 3 9l8 8'
+							stroke='#1D2026'
+							stroke-width='3'
+							fill='none'
+							fill-rule='evenodd'
+						/>
+					</svg>
+				</div>
 				<img
-					className='md:rounded-[1rem] cursor-pointer'
+					onClick={openModal}
+					className='md:rounded-[1rem] max-md:h-[20rem] cursor-pointer'
 					src={productImage}
 					alt='Selected product'
 				/>
+				<div
+					onClick={() => handleImageChange(1)}
+					className='md:hidden absolute cursor-pointer top-1/2 z-1 right-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2'
+				>
+					<svg
+						width='13'
+						height='18'
+						xmlns='http://www.w3.org/2000/svg'
+					>
+						<path
+							d='m2 1 8 8-8 8'
+							stroke='#1D2026'
+							stroke-width='3'
+							fill='none'
+							fill-rule='evenodd'
+						/>
+					</svg>
+				</div>
 			</div>
 			<div className='max-md:hidden flex mt-10 justify-between'>
 				{images.map(({ main, thumbnail }) => (
