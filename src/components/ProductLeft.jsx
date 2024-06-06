@@ -51,7 +51,6 @@ const ProductLeft = () => {
 		} else if (newIndex >= images.length) {
 			newIndex = 0
 		}
-
 		setProductImage(images[newIndex].main)
 	}
 
@@ -83,11 +82,15 @@ const ProductLeft = () => {
 
 	const handleMouseMove = (event) => {
 		const rect = event.currentTarget.getBoundingClientRect()
-		const centerX = rect.width / 2
-		const centerY = rect.height / 2
-		const x = event.clientX - rect.left - centerX
-		const y = event.clientY - rect.top - centerY
-		console.log(`X: ${x}, Y: ${y}`)
+		const x = event.clientX - rect.left
+		const y = event.clientY - rect.top
+		if (x > 25 && x < 375) {
+			setCoords((prevCoords) => ({ ...prevCoords, x: x - 25.5 }))
+		}
+
+		if (y > 25 && y < 375) {
+			setCoords((prevCoords) => ({ ...prevCoords, y: y - 25 }))
+		}
 	}
 
 	return (
@@ -105,9 +108,9 @@ const ProductLeft = () => {
 						<path
 							d='M11 1 3 9l8 8'
 							stroke='#1D2026'
-							stroke-width='3'
+							strokeWidth='3'
 							fill='none'
-							fill-rule='evenodd'
+							fillRule='evenodd'
 						/>
 					</svg>
 				</div>
@@ -124,13 +127,11 @@ const ProductLeft = () => {
 					{showZoom && (
 						<div className='absolute overflow-hidden translate-x-[125%] top-0 right-0 h-[33rem] w-[33rem] bg-green-500 z-10'>
 							<img
-                            style={{
-                                height: '33rem',
-                                width: '33rem',
-                                top: '',
-                                left: ''
-                            }}
-								className='scale-[3]'
+								style={{
+									height: '33rem',
+									width: '33rem',
+									transform: `scale(3) translateX(${175 - coords.x}px) translateY(${175 - coords.y}px)`,
+								}}
 								src={productImage}
 								alt='zoomed image'
 							/>
@@ -149,9 +150,9 @@ const ProductLeft = () => {
 						<path
 							d='m2 1 8 8-8 8'
 							stroke='#1D2026'
-							stroke-width='3'
+							strokeWidth='3'
 							fill='none'
-							fill-rule='evenodd'
+							fillRule='evenodd'
 						/>
 					</svg>
 				</div>
@@ -200,7 +201,7 @@ const ProductLeft = () => {
 							>
 								<path
 									d='m11.596.782 2.122 2.122L9.12 7.499l4.597 4.597-2.122 2.122L7 9.62l-4.595 4.597-2.122-2.122L4.878 7.5.282 2.904 2.404.782l4.595 4.596L11.596.782Z'
-									fill-rule='evenodd'
+									fillRule='evenodd'
 								/>
 							</svg>
 						</div>
@@ -218,9 +219,9 @@ const ProductLeft = () => {
 										<path
 											d='M11 1 3 9l8 8'
 											stroke='#1D2026'
-											stroke-width='3'
+											strokeWidth='3'
 											fill='none'
-											fill-rule='evenodd'
+											fillRule='evenodd'
 										/>
 									</svg>
 								</div>
@@ -241,9 +242,9 @@ const ProductLeft = () => {
 										<path
 											d='m2 1 8 8-8 8'
 											stroke='#1D2026'
-											stroke-width='3'
+											strokeWidth='3'
 											fill='none'
-											fill-rule='evenodd'
+											fillRule='evenodd'
 										/>
 									</svg>
 								</div>
