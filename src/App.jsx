@@ -22,8 +22,8 @@ const App = () => {
 		<>
 			<cartItemContext.Provider value={{ cartItem, handleCartChange }}>
 				<zoomContext.Provider value={{ showZoom, setShowZoom }}>
-					<Navbar />
 					<ProductPage />
+					<Navbar />
 				</zoomContext.Provider>
 			</cartItemContext.Provider>
 		</>

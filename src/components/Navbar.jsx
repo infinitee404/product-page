@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CartContent from './CartContent'
 
 import Logo from '../assets/logo.svg'
@@ -6,6 +6,7 @@ import Avatar from '../assets/image-avatar.png'
 
 const Navbar = () => {
 	const [cartVisible, setCartVisible] = useState(false)
+	const [mobileMenu, setMobileMenu] = useState(false)
 
 	const showCart = () => {
 		setCartVisible(true)
@@ -14,9 +15,19 @@ const Navbar = () => {
 	const hideCart = () => {
 		setCartVisible(false)
 	}
+
+	useEffect(() => {
+		console.log('showing')
+	}, [mobileMenu])
 	return (
-		<nav className='border-b border-[#00000040] top-0 w-full h-[6rem] flex items-center justify-between max-w-[1200px] mx-auto px-4'>
-			<div className='flex justify-between items-center h-full'>
+		<nav className='border-b border-[#00000040] fixed top-0 left-1/2 -translate-x-[50%] w-full h-[6rem] flex items-center justify-between max-w-[1200px] mx-auto px-4'>
+			<div className='select-none relative flex justify-between items-center h-full pl-16 md:pl-0'>
+				<div
+					onClick={() => setMobileMenu((prevShow) => !prevShow)}
+					className='cursor-pointer absolute left-0 text-4xl'
+				>
+					🍔
+				</div>
 				<img
 					className='h-[20px]'
 					src={Logo}
