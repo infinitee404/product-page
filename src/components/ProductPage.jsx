@@ -44,7 +44,7 @@ const ProductPage = () => {
 	return (
 		<main
 			style={{ height: 'calc(100vh - 6rem)' }}
-			className='w-full flex max-md:flex-col max-w-[1000px] md:justify-between mx-auto items-center'
+			className='w-full flex flex-col md:flex-row max-w-[1000px] md:justify-between mx-auto items-center'
 		>
 			<ProductLeft />
 			{!showZoom && (

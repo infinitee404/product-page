@@ -68,12 +68,12 @@ const CartContent = () => {
 	return (
 		<>
 			<div className='max-md:hidden'>
-				<div className='cart-component cursor-default absolute top-20 right-0 w-[20rem] bg-white border border-gray-200 shadow-lg p-4 rounded-lg z-5 min-h-[12rem]'>
+				<div className='cart-component cursor-default absolute top-20 right-0 w-[20rem] bg-white border border-gray-200 shadow-lg p-4 rounded-lg z-10 min-h-[12rem]'>
 					<CartDetails />
 				</div>
 			</div>
 			<div className='md:hidden'>
-				<div className='z-10 cursor-default fixed top-[4.5rem] left-[15vw] w-[70vw] bg-white border border-gray-200 shadow-lg p-4 rounded-lg z-5 min-h-[12rem]'>
+				<div className='cursor-default fixed top-[4.5rem] left-[15vw] w-[70vw] bg-white border border-gray-200 shadow-lg p-4 rounded-lg z-10 min-h-[12rem]'>
 					<CartDetails />
 				</div>
 			</div>

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { zoomContext } from '../App'
 
@@ -41,6 +41,7 @@ const ProductLeft = () => {
 	const [productModal, setProductModal] = useState(false)
 	const [modalImage, setModalImage] = useState()
 	const [coords, setCoords] = useState({ x: 0, y: 0 })
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
 	const handleImageChangeResponsive = (value) => {
 		const currentIndex = images.findIndex((image) => image.main === productImage)
@@ -54,9 +55,9 @@ const ProductLeft = () => {
 		setProductImage(images[newIndex].main)
 	}
 
-    const handleImageChange = (imageName) =>{
-        setProductImage(imageName)
-    }
+	const handleImageChange = (imageName) => {
+		setProductImage(imageName)
+	}
 
 	const handleModalImageChange = (imageName) => {
 		setModalImage(imageName)
@@ -84,6 +85,22 @@ const ProductLeft = () => {
 		setProductModal(false)
 	}
 
+	const onMouseEnter = () => {
+		if (windowWidth > 768) {
+			setShowZoom(true)
+		}
+	}
+
+	const onMouseLeave = () => {
+		if (windowWidth > 768) {
+			setShowZoom(false)
+		}
+	}
+
+	const handleResize = () => {
+		setWindowWidth(window.innerWidth)
+	}
+
 	const handleMouseMove = (event) => {
 		const rect = event.currentTarget.getBoundingClientRect()
 		const x = event.clientX - rect.left
@@ -97,12 +114,41 @@ const ProductLeft = () => {
 		}
 	}
 
+	useEffect(() => {
+		window.addEventListener('resize', handleResize)
+		return () => window.removeEventListener('resize', handleResize)
+	}, [])
+
 	return (
 		<div className='relative w-[25rem] select-none flex flex-col'>
 			<div className='relative flex items-center justify-center mb-8 md:mb-0'>
+				<div className='relative'>
+					<img
+						onClick={openModal}
+						onMouseEnter={onMouseEnter}
+						onMouseLeave={onMouseLeave}
+						onMouseMove={handleMouseMove}
+						className='md:rounded-[1rem] max-md:h-[20rem] md:cursor-zoom-in'
+						src={productImage}
+						alt='Selected product'
+					/>
+					{showZoom && (
+						<div className='max-md:hidden absolute overflow-hidden translate-x-[115%] max-lg:translate-x-[100%] top-0 right-0 h-[33rem] w-[33rem] bg-green-500'>
+							<img
+								style={{
+									height: '33rem',
+									width: '33rem',
+									transform: `scale(3) translateX(${175 - coords.x}px) translateY(${175 - coords.y}px)`,
+								}}
+								src={productImage}
+								alt='zoomed image'
+							/>
+						</div>
+					)}
+				</div>
 				<div
-					onClick={() => handleImageChangeResponsiveResponsive(-1)}
-					className='md:hidden absolute cursor-pointer top-1/2 z-1 left-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2 '
+					onClick={() => handleImageChangeResponsive(-1)}
+					className='md:hidden absolute cursor-pointer top-1/2 left-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2 '
 				>
 					<svg
 						width='12'
@@ -118,33 +164,9 @@ const ProductLeft = () => {
 						/>
 					</svg>
 				</div>
-				<div className='relative'>
-					<img
-						onClick={openModal}
-						onMouseEnter={() => setShowZoom(true)}
-						onMouseLeave={() => setShowZoom(false)}
-						onMouseMove={handleMouseMove}
-						className='md:rounded-[1rem] max-md:h-[20rem] cursor-zoom-in'
-						src={productImage}
-						alt='Selected product'
-					/>
-					{showZoom && (
-						<div className='absolute overflow-hidden translate-x-[125%] top-0 right-0 h-[33rem] w-[33rem] bg-green-500 z-10'>
-							<img
-								style={{
-									height: '33rem',
-									width: '33rem',
-									transform: `scale(3) translateX(${175 - coords.x}px) translateY(${175 - coords.y}px)`,
-								}}
-								src={productImage}
-								alt='zoomed image'
-							/>
-						</div>
-					)}
-				</div>
 				<div
 					onClick={() => handleImageChangeResponsive(1)}
-					className='md:hidden absolute cursor-pointer top-1/2 z-1 right-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2'
+					className='md:hidden absolute cursor-pointer top-1/2 right-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2'
 				>
 					<svg
 						width='13'
