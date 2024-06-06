@@ -42,7 +42,7 @@ const ProductLeft = () => {
 	const [modalImage, setModalImage] = useState()
 	const [coords, setCoords] = useState({ x: 0, y: 0 })
 
-	const handleImageChange = (value) => {
+	const handleImageChangeResponsive = (value) => {
 		const currentIndex = images.findIndex((image) => image.main === productImage)
 		let newIndex = currentIndex + value
 
@@ -53,6 +53,10 @@ const ProductLeft = () => {
 		}
 		setProductImage(images[newIndex].main)
 	}
+
+    const handleImageChange = (imageName) =>{
+        setProductImage(imageName)
+    }
 
 	const handleModalImageChange = (imageName) => {
 		setModalImage(imageName)
@@ -97,7 +101,7 @@ const ProductLeft = () => {
 		<div className='relative w-[25rem] select-none flex flex-col'>
 			<div className='relative flex items-center justify-center mb-8 md:mb-0'>
 				<div
-					onClick={() => handleImageChange(-1)}
+					onClick={() => handleImageChangeResponsiveResponsive(-1)}
 					className='md:hidden absolute cursor-pointer top-1/2 z-1 left-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2 '
 				>
 					<svg
@@ -139,7 +143,7 @@ const ProductLeft = () => {
 					)}
 				</div>
 				<div
-					onClick={() => handleImageChange(1)}
+					onClick={() => handleImageChangeResponsive(1)}
 					className='md:hidden absolute cursor-pointer top-1/2 z-1 right-4 rounded-full flex justify-center items-center h-10 w-10 bg-white border border-black -translate-y-1/2'
 				>
 					<svg
